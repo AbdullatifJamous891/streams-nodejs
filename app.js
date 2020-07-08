@@ -3,9 +3,9 @@ var fs = require("fs");
 
 
 var server = http.createServer((req, res)=>{
-    res.writeHead(200, { 'Content-type': 'text/plain'});
+    res.writeHead(200, { 'Content-type': 'text/html'});
 
-    var myReadStream = fs.createReadStream(__dirname + '/readMe.txt');
+    var myReadStream = fs.createReadStream(__dirname + '/index.html');
 
     // we can use pipe method only with readable stream
     myReadStream.pipe(res)
