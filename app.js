@@ -3,12 +3,21 @@ var fs = require("fs");
 
 
 var server = http.createServer((req, res)=>{
-    res.writeHead(200, { 'Content-type': 'text/html'});
-
-    var myReadStream = fs.createReadStream(__dirname + '/index.html');
-
-    // we can use pipe method only with readable stream
-    myReadStream.pipe(res)
+    if(req.url === '/home' || req.url === '/'){
+        res.writeHead(200, { 'Content-Type': 'text/html'});
+        fs.createReadStream(__dirname + '/index.html').pipe(res)
+    } else if(req.url === '/contact'){
+        res.writeHead(200, { 'Content-Type': 'text/html'});
+        fs.createReadStream(__dirname + '/contact.html').pipe(res)
+    } else if(req.url === '/api/visitors'){
+        var visitorsObj = [{name: 'Talha', age: 16}, {name: 'Saad', age: 20}];
+        res.writeHead(200, {'Content-Type': 'application/json'})
+        res.end(JSON.stringify(visitorsObj));
+    } else {
+        res.writeHead(404, {'Content-Type': 'text/html'})
+        fs.createReadStream(__dirname + '/404.html').pipe(res)
+    }
+    
 })
 
 server.listen(3000, '127.0.0.1');
